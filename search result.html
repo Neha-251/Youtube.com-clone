@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/96fc2efcb3.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="search result.css">
+
+    <title>Document</title>
+    
+</head>
+
+<body>
+    <nav>
+        <i class="fa-solid fa-bars" id="menu"></i>
+        <i class="fa-brands fa-youtube"></i>
+        <p id="youtubeIcon">YouTube</p>
+        <input type="text" placeholder="Search" id="search_input">
+        <button id="search_button" onclick="showVideo()"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <i class="fa-solid fa-microphone"></i>
+        <i class="fa-solid fa-video"></i>
+        <i class="fa-solid fa-braille"></i>
+        <i class="fa-regular fa-bell"></i>
+        <i class="fa-solid fa-user" id="user-interface"></i>
+
+
+    </nav>
+
+
+
+    <div id="container">
+        <div id="sidebar_extra">
+            <div>
+                <i class="fa-solid fa-house"></i>
+                <p>Home</p>
+            </div>
+            <div>
+                <i class="fa-regular fa-compass"></i>
+                <p>Explore</p>
+            </div>
+            <div>
+                <i class="fa-solid fa-tv"></i>
+                <p>Subscriptions</p>
+            </div>
+            <div>
+                <i class="fa-solid fa-play"></i>
+                <p>Library</p>
+            </div>
+
+        </div>
+
+        <div id="sidebar">
+
+            <p>
+                <a href="index.html">
+                    <i class="fa-solid fa-house"></i>Home
+                </a>
+            </p>
+            <p><i class="fa-regular fa-compass"></i>Explore</p>
+            <p><i class="fa-solid fa-play"></i>Subcriptions</p>
+            <hr>
+            <p><i class="fa-solid fa-play"></i>Library</p>
+            <p><i class="fa-solid fa-clock-rotate-left"></i>History</p>
+            <p><i class="fa-solid fa-play"></i>Your Videos</p>
+            <p><i class="fa-solid fa-clock-rotate-left"></i>Watch Later</p>
+            <p><i class="fa-regular fa-thumbs-up"></i>Liked Videos</p>
+            <p><i class="fa-solid fa-chevron-down"></i>Show more</p>
+            <hr>
+            <p id="subscription">Subcriptions</p>
+            <p>Hare Krishna TV</p>
+            <p>Cuisinea</p>
+            <p>Hare Krishna TV</p>
+            <p>Cuisinea</p>
+            <p>Hare Krishna TV</p>
+            <p>Cuisinea</p>
+            <p>Hare Krishna TV</p>
+            <p>Cuisinea</p>
+            <p>Hare Krishna TV</p>
+            <p>Cuisinea</p>
+            <p>Hare Krishna TV</p>
+            <p>Cuisinea</p>
+            <p>Hare Krishna TV</p>
+            <p>Cuisinea</p>
+            <p>Cuisinea</p>
+            <p>Cuisinea</p>
+            <p>Cuisinea</p>
+            <p>Cuisinea</p>
+            <p>Cuisinea</p>
+            <p>Cuisinea</p>
+            <p>Show more</p>
+        </div>
+
+        <div id="video_div"></div>
+
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+
+
+
+    let results_div = document.getElementById("video_div");
+
+    async function searchVideo() {
+        try {
+
+            let video_query = localStorage.getItem("video_query");
+            console.log(video_query);
+           // let api = "AIzaSyBF3XvZOIBr2kif7qkHMLV7sijZ-M513uk";
+           // let api = "AIzaSyBRTz9moL0W-Y4sfQaArpjtaBDajpBIeWU";
+            let api = "AIzaSyCb1dzn7vQtOUSrc1_q6-E_1NGQTXfUWI4";
+
+           let response = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${video_query}&type=video&key=${api}`);
+
+            let data = await response.json();
+           let videos = data.items;
+           console.log(videos);
+
+            appendVideos(videos);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function showVideo() {
+        try {
+
+            let search_input = document.getElementById('search_input').value;
+           
+            //let api = "AIzaSyBNjUjG9j9QkFkR_9v46L1hUv1004CboiA";
+           // let api = "AIzaSyBF3XvZOIBr2kif7qkHMLV7sijZ-M513uk";
+           // let api = "AIzaSyBRTz9moL0W-Y4sfQaArpjtaBDajpBIeWU";
+            let api = "AIzaSyCb1dzn7vQtOUSrc1_q6-E_1NGQTXfUWI4";
+
+            let response = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search_input}&type=video&key=${api}`);
+
+            let data = await response.json();
+            let videos = data.items;
+            console.log(videos);
+
+            appendVideos(videos);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    searchVideo();
+    
+
+    //<iframe 
+    //width="560" height="315" src="https://www.youtube.com/embed/2zUA10RS0AU" 
+    //title="YouTube video player" frameborder="0" 
+    //allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    //</iframe>
+
+    let sidebar = document.getElementById("sidebar");
+    let sidebar_extra = document.getElementById("sidebar_extra");
+
+    let flag_sidebar = false;
+
+    menu.addEventListener("click", () => {
+        if (flag_sidebar === false) {
+
+            sidebar.style.display = "none";
+            sidebar_extra.style.display = "block";
+
+            flag_sidebar = true;
+
+        } else if (flag_sidebar === true) {
+
+            sidebar.style.display = "block";
+            sidebar_extra.style.display = "none";
+
+            flag_sidebar = false;
+        }
+    })
+
+
+
+    const appendVideos = (items) => {
+
+        items.forEach((element) => {
+
+            let search_div = document.createElement('div');
+            let video_div = document.createElement('div');
+            let details_div = document.createElement('div');
+            details_div.setAttribute("id", "details_div");
+            search_div.setAttribute("id", "search_div");
+            video_div.setAttribute("id", "video_div");
+
+
+            let { id: { videoId } } = element;
+            let { snippet: { channelTitle } } = element;
+            let { snippet: { title } } = element;
+            let { snippet: { description } } = element;
+            let { snippet: { thumbnails: { high: { url } } } } = element;
+            console.log(videoId);
+
+
+            let iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.width = "450";
+            iframe.height = "300";
+            iframe.title = title;
+            iframe.frameBorder = "5";
+            iframe.allow = "accelerometer";
+            iframe.allow = "autoplay";
+            iframe.allow = "clipboard-write";
+            iframe.allow = "encrypted-media";
+            iframe.allow = "gyroscope";
+            iframe.allow = "picture-in-picture";
+            iframe.allow = "fullscreen";
+
+
+            let thumbnail_img = document.createElement('img');
+            thumbnail_img.setAttribute("id", "thumbnail");
+            thumbnail_img.src = url;
+
+            let title_p = document.createElement('p');
+            title_p.setAttribute("id", "title");
+            let channelTitle_p = document.createElement('p');
+            channelTitle_p.setAttribute("id", "channelTitle");
+            let description_p = document.createElement('p');
+            description_p.setAttribute("id", "description");
+
+            title_p.innerText = title;
+            channelTitle_p.innerText = channelTitle;
+            description_p.innerText = description;
+
+            video_div.append(thumbnail_img);
+            details_div.append(title_p, channelTitle_p, description_p);
+            search_div.append(video_div, details_div);
+            results_div.append(search_div);
+
+            video_div.addEventListener("click", function showVideo() {
+
+                localStorage.setItem("videoId", videoId);
+                localStorage.setItem("videoTitle", title);
+
+                window.location.href = "videopage.html";
+            });
+
+        });
+    }
+
+
+
+// api link - > https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=tesla&type=video&key=[YOUR_API_KEY];
+
+// api key -> AIzaSyCtHgiOeEsR5mIT-R-3DZljEwLbciOGbmw
+</script>
